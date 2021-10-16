@@ -3,12 +3,16 @@ const consign = require('consign')
 const app = express()
 const knex = require('knex')
 const knexfile = require('../knexfile')
+const knexLogger = require('knex-logger')   
 
 //TODO Criar chaveamento dinamico
 app.db = knex(knexfile.test)
 
-consign({ cwd: 'src', verbose: false})
+app.use(knexLogger(app.db))
+
+consign({ cwd: 'src'})
 .include('./config/middlewares.js')
+.then('./services')
 .then('./routes')
 .then('./config/routes.js')
 .into(app)
@@ -17,5 +21,11 @@ consign({ cwd: 'src', verbose: false})
 app.get('/', (req, res) => {
     res.status(200).send()
 })
+
+// app.db.on('query', (query) => {
+//     console.log({ sql: query.sql, bidings: query.bidings ? query.bidings.join(',') : ''})
+// })
+// .on('query-response', (response) => console.log(response) )
+// .on('error', (error) => console.log(error))
 
 module.exports = app
