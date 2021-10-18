@@ -1,9 +1,8 @@
 const request = require('supertest')
-const { test } = require('../../knexfile')
 
 const app = require('../../src/app')
 
-const email = `${Date.now()}@email.com`
+const email = `${Date.now()}@email.com`;
 
 test('Deve listar todos os usuarios', () => {
     return request(app).get('/users').then((res) => {
@@ -50,11 +49,11 @@ test('Não deve inserir usuário sem senha', (done) =>{
     .then((res) => {
         expect(res.status).toBe(400)
         expect(res.body.error).toBe('Senha é um atributo obrigatório')
-        done()
-    })
-})
+        done();
+    });
+});
 
-test('Não deve inserir usuário com email existente!', () => {
+test('Não deve inserir usuário com email existente', () => {
     return request(app).post('/users')
     .send({ name: 'José Wilker', email, password: '12345'})
     .then((res) => {
