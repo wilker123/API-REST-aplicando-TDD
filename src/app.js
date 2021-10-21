@@ -19,7 +19,9 @@ consign({ cwd: 'src', verbose: false})
 
 
 app.get('/', (req, res) => {
-    res.status(200).send()
+    res.status(200).send({
+        title: "Deu certo"
+    })
 })
 
 // app.db.on('query', (query) => {
